@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.5",
+    "prettier": "^3.2.5"
+  },
+  "dependencies": {
+    "@tsconfig/strictest": "^2.0.5"
+  },
+  "prettier": {
+    "bracketSpacing": false
+  },
+  "lint-staged": {
+    "*": "prettier -uw --cache"
+  }
+}

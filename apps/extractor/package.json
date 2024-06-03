@@ -1,0 +1,33 @@
+{
+  "main": "src/index",
+  "scripts": {
+    "start": "tsx watch src/index",
+    "setup": "tsx scripts/setup",
+    "print-schema": "tsx scripts/printSchema",
+    "build": "ncc build"
+  },
+  "dependencies": {
+    "@graphql-tools/schema": "^10.0.3",
+    "@koa/bodyparser": "^5.1.1",
+    "@koa/cors": "^5.0.0",
+    "@octokit/core": "^6.1.2",
+    "dotenv": "^16.4.5",
+    "fast-cartesian": "^9.0.0",
+    "graphql-playground-middleware-koa": "^1.6.22",
+    "isomorphic-git": "^1.25.10",
+    "koa": "^2.15.3",
+    "koa-graphql": "^0.12.0",
+    "koa-router": "^12.0.1",
+    "mongodb": "^6.6.2",
+    "styled-jsx": "^5.1.6",
+    "ts-dedent": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.15.0",
+    "@types/koa__router": "^12.0.4",
+    "@vercel/ncc": "^0.38.1",
+    "ora": "^8.0.1",
+    "tsx": "^4.11.0",
+    "typescript": "^5.4.5"
+  }
+}

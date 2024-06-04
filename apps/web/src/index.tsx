@@ -7,9 +7,10 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import Home from "./pages/Home.tsx";
-import relayEnvironment from "./relayEnvironment.ts";
-import HomeGetColorschemesQuery from "./pages/__generated__/HomeGetColorschemesQuery.graphql.ts";
+import Home from "./pages/Home";
+import relayEnvironment from "./relayEnvironment";
+import HomeGetColorschemesQuery from "./pages/__generated__/HomeGetColorschemesQuery.graphql";
+import globalStyles from "./globalStyles";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,9 +25,15 @@ const router = createBrowserRouter(
 );
 
 createRoot(document.getElementById("root")!).render(
-  <RelayEnvironmentProvider environment={relayEnvironment}>
-    <StrictMode>
-      <RouterProvider router={router} />
-    </StrictMode>
-  </RelayEnvironmentProvider>,
+  <>
+    <RelayEnvironmentProvider environment={relayEnvironment}>
+      <StrictMode>
+        <RouterProvider router={router} />
+      </StrictMode>
+    </RelayEnvironmentProvider>
+
+    <style jsx global>
+      {globalStyles}
+    </style>
+  </>,
 );

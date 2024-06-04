@@ -12,14 +12,18 @@
   "dependencies": {
     "@fontsource/iosevka": "^5.0.11",
     "@fontsource/iosevka-aile": "^5.0.11",
+    "clsx": "^2.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-relay": "^16.2.0",
     "react-router-dom": "^6.23.1",
     "relay-runtime": "^16.2.0",
-    "styled-jsx": "^5.1.6"
+    "styled-jsx": "^5.1.6",
+    "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
+    "@svgr/plugin-jsx": "^8.1.0",
+    "@svgr/plugin-svgo": "^8.1.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/react-relay": "^16.0.6",
@@ -30,9 +34,12 @@
     "postcss-normalize": "^10.0.1",
     "postcss-preset-env": "^9.5.14",
     "relay-compiler": "^16.2.0",
+    "styled-jsx-plugin-postcss": "^4.0.1",
     "typescript": "^5.4.5",
     "vite": "^5.2.12",
-    "vite-plugin-relay": "^2.1.0"
+    "vite-plugin-relay": "^2.1.0",
+    "vite-plugin-svgr": "^4.2.0",
+    "vite-tsconfig-paths": "^4.3.2"
   },
   "browserslist": {
     "production": [

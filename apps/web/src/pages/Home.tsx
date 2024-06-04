@@ -1,6 +1,7 @@
 import {usePreloadedQuery} from "react-relay";
 import {useLoaderData, useNavigate} from "react-router-dom";
 import {graphql} from "relay-runtime";
+import Header from "@/components/Header";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -25,5 +26,9 @@ export default function Home() {
   // @ts-ignore
   const colorscheme = data.colorscheme;
 
-  return <div onClick={() => navigate("/test")}>sair</div>;
+  return (
+    <div>
+      <Header></Header>
+    </div>
+  );
 }

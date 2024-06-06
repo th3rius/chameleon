@@ -211,7 +211,7 @@ export default `
     """
     The item at the end of the edge.
     """
-    node: Colorscheme
+    node: Colorscheme!
   }
 
   """
@@ -221,7 +221,7 @@ export default `
     """
     A list of edges.
     """
-    edges: [ColorschemeEdge]
+    edges: [ColorschemeEdge!]!
 
     """
     Information to aid in pagination.

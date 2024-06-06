@@ -27,6 +27,7 @@ export default function RadioGroup({
             border: 1px solid rgba(0, 0, 0, 0.08);
             padding: 4px;
             display: flex;
+            background: white;
           }
         `}</style>
       </div>

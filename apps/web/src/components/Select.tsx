@@ -1,10 +1,17 @@
-import {PropsWithChildren} from "react";
+import {ChangeEventHandler, PropsWithChildren} from "react";
 import ChevronDown from "@/assets/chevronDown.svg";
 
-export default function Select({children}: PropsWithChildren) {
+export interface SelectProps extends PropsWithChildren {
+  value?: string | number;
+  onChange?: ChangeEventHandler<HTMLSelectElement>;
+}
+
+export default function Select({children, value, onChange}: SelectProps) {
   return (
     <div className="container">
-      <select className="select">{children}</select>
+      <select className="select" value={value} onChange={onChange}>
+        {children}
+      </select>
       <span className="chevron">
         <ChevronDown height={18} />
       </span>

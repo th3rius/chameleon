@@ -1,11 +1,26 @@
-import {forwardRef, useImperativeHandle, useRef} from "react";
+import {
+  FormEvent,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import Shortcut from "./KeyboardInput";
 
-export type SearchBarType = {
+export interface SearchBarType {
   focus: () => void;
-};
+}
 
-export default forwardRef<SearchBarType>(function SearchBar(_props, ref) {
+export interface SearchBarProps {
+  name?: string;
+  value?: string;
+}
+
+export default forwardRef<SearchBarType, SearchBarProps>(function SearchBar(
+  {name, value: initialValue},
+  ref,
+) {
+  const [value, setValue] = useState(initialValue);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useImperativeHandle(ref, () => ({
@@ -18,9 +33,16 @@ export default forwardRef<SearchBarType>(function SearchBar(_props, ref) {
     inputRef.current?.focus();
   }
 
+  function handleChange(ev: FormEvent<HTMLInputElement>) {
+    setValue(ev.currentTarget.value);
+  }
+
   return (
     <div className="container" onClick={handleClick}>
       <input
+        name={name}
+        value={value}
+        onChange={handleChange}
         className="search-bar"
         placeholder="Search colorschemes..."
         ref={inputRef}

@@ -1,34 +1,14 @@
-import {graphql} from "relay-runtime";
-import {CodeSnippetFragment$key} from "./__generated__/CodeSnippetFragment.graphql.ts";
-import {useFragment} from "react-relay";
-
-const CodeSnippetFragment = graphql`
-  fragment CodeSnippetFragment on Variant {
-    colorGroups {
-      name
-      hexCode
-    }
-  }
-`;
+import Colors from "./Colors";
 
 export interface CodeSnippetProps {
-  colorscheme: CodeSnippetFragment$key;
+  colors: Colors;
 }
 
-export default function CodeSnippet({colorscheme}: CodeSnippetProps) {
-  const data = useFragment(CodeSnippetFragment, colorscheme);
-
-  const colors = data.colorGroups.reduce(
-    (acc, cur) => ({...acc, [cur.name]: cur.hexCode}),
-    {} as any,
-  );
-
-  console.log(colors);
-
+export default function CodeSnippet({colors}: CodeSnippetProps) {
   return (
-    <div className="window">
+    <div className="container">
       <pre className="code-snippet">
-        <code>
+        <code className="code">
           <div>
             <span className="vimLineComment">
               {'" Returns true if the color hex value is light'}
@@ -170,8 +150,25 @@ export default function CodeSnippet({colorscheme}: CodeSnippetProps) {
       </pre>
 
       <style jsx>{`
-        .window {
+        .container {
           background-color: ${colors.NormalBg};
+          overflow-x: auto;
+          width: 100%;
+          display: flex;
+          align-items: center;
+        }
+
+        .code {
+          padding: 0.5rem 0;
+        }
+
+        .code > div {
+          padding: 0 .5rem;
+        }
+
+        .code-snippet {
+          margin: 0;
+          width: 100%;
         }
 
         .CursorFg {
@@ -276,7 +273,7 @@ export default function CodeSnippet({colorscheme}: CodeSnippetProps) {
         }
 
         .vimSubst {
-          color: ${colors.vimSubst};
+          color: ${colors.vimSubst || colors.vimFuncName};
         }
 
         .vimNumber {

@@ -48,14 +48,16 @@ export default function Radio({children, value, prefix}: RadioProps) {
           padding: 0 6px;
         }
 
-        .container:hover > .radio {
-          color: black;
-        }
-
         .checked {
           background: hsla(0, 0%, 95%, 1);
           color: black;
           border: 2px;
+        }
+
+        @media (hover: hover) {
+          .container:hover > .radio {
+            color: black;
+          }
         }
       `}</style>
     </div>

@@ -13,6 +13,7 @@
     "@fontsource/iosevka": "^5.0.11",
     "@fontsource/iosevka-aile": "^5.0.11",
     "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-relay": "^16.2.0",

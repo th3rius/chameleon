@@ -10,13 +10,13 @@ import {
 } from "react-router-dom";
 import Home from "./pages/Home";
 import relayEnvironment from "./relayEnvironment";
-import HomeGetColorschemesQuery from "./pages/__generated__/HomeGetColorschemesQuery.graphql";
+import ColorschemesGridQuery from "./pages/Home/__generated__/ColorschemesGridQuery.graphql";
 import globalStyles from "./globalStyles";
 
 function homeLoader({request}: LoaderFunctionArgs) {
   const {searchParams} = new URL(request.url);
   const backgroundFilter = searchParams.get("bg");
-  return loadQuery(relayEnvironment, HomeGetColorschemesQuery, {
+  return loadQuery(relayEnvironment, ColorschemesGridQuery, {
     background:
       (backgroundFilter === "light" && "LIGHT") ||
       (backgroundFilter === "dark" && "DARK") ||

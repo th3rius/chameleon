@@ -44,7 +44,7 @@ export default forwardRef<SearchBarType, SearchBarProps>(function SearchBar(
         value={value}
         onChange={handleChange}
         className="search-bar"
-        placeholder="Search colorschemes..."
+        placeholder="Search colorschemes"
         ref={inputRef}
       />
       <Shortcut>/</Shortcut>

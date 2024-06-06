@@ -1,7 +1,7 @@
 import VimIcon from "@/assets/vim.svg";
 import SearchBar, {SearchBarType} from "./SearchBar";
 import {Link, useSearchParams} from "react-router-dom";
-import {useEventListener} from "usehooks-ts";
+import {useEventListener, useMediaQuery} from "usehooks-ts";
 import {FormEvent, useRef, useState} from "react";
 import Select from "./Select";
 import Radio from "@/components/Radio";
@@ -9,7 +9,11 @@ import SunIcon from "@/assets/sun.svg";
 import MoonIcon from "@/assets/moon.svg";
 import clsx from "clsx";
 
-export default function Header() {
+export interface HeaderProps {
+  hideFilters?: boolean;
+}
+
+export default function Header({hideFilters: disableFilters}: HeaderProps) {
   const searchBarRef = useRef<SearchBarType>(null);
 
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -19,6 +23,9 @@ export default function Header() {
   const editor = searchParams.get("e") || "all";
   const orderBy = searchParams.get("s") || "popularity";
   const query = searchParams.get("q") || undefined;
+
+  const isLaptop = useMediaQuery("(min-width: 1024px)");
+  const isLaptopLarge = useMediaQuery("(min-width: 1440px)");
 
   const updateSearchParam = (name: string, value: string) =>
     setSearchParams((nextSearchParams) => {
@@ -62,32 +69,46 @@ export default function Header() {
       <div className="toolbar-section">
         <Link to="/" className="branding">
           <VimIcon />
-          <h1 className="title">Chameleon</h1>
+          {(isLaptopLarge || disableFilters) && (
+            <h1 className="title">Chameleon</h1>
+          )}
         </Link>
-        <form onSubmit={handleQuery}>
-          <SearchBar name="query" value={query as string} ref={searchBarRef} />
-        </form>
-        <Radio.Group value={background} onChange={handleBackground}>
-          <Radio value="all">All</Radio>
-          <Radio prefix={<SunIcon />} value="light">
-            Light
-          </Radio>
-          <Radio prefix={<MoonIcon />} value="dark">
-            Dark
-          </Radio>
-        </Radio.Group>
+        {!disableFilters && isLaptop && (
+          <form onSubmit={handleQuery}>
+            <SearchBar
+              name="query"
+              value={query as string}
+              ref={searchBarRef}
+            />
+          </form>
+        )}
+        {!disableFilters && (
+          <Radio.Group value={background} onChange={handleBackground}>
+            <Radio value="all">All</Radio>
+            <Radio prefix={<SunIcon />} value="light">
+              Light
+            </Radio>
+            <Radio prefix={<MoonIcon />} value="dark">
+              Dark
+            </Radio>
+          </Radio.Group>
+        )}
       </div>
-      <div className="toolbar-section">
-        <Select value={orderBy} onChange={handleSort}>
-          <option value="popular">Popular</option>
-          <option value="newest">Newest</option>
-        </Select>
-        <Radio.Group value={editor} onChange={handleEditor}>
-          <Radio value="all">All</Radio>
-          <Radio value="vim">Vim</Radio>
-          <Radio value="neovim">Neovim</Radio>
-        </Radio.Group>
-      </div>
+      {!disableFilters && isLaptop && (
+        <div className="toolbar-section">
+          <Select value={orderBy} onChange={handleSort}>
+            <option value="popular">Popular</option>
+            <option value="newest">Newest</option>
+          </Select>
+          {isLaptopLarge && (
+            <Radio.Group value={editor} onChange={handleEditor}>
+              <Radio value="all">All</Radio>
+              <Radio value="vim">Vim</Radio>
+              <Radio value="neovim">Neovim</Radio>
+            </Radio.Group>
+          )}
+        </div>
+      )}
 
       <style jsx>{`
         .container {
@@ -99,7 +120,7 @@ export default function Header() {
           top: 0;
           background: white;
           z-index: 1;
-
+          gap: 2rem;
           box-shadow: inset 0 -1px 0 0 transparent;
           transition: box-shadow 0.15s;
         }

@@ -6,18 +6,16 @@ export interface WindowProps extends PropsWithChildren {
 
 export default function Window({children, title}: WindowProps) {
   return (
-    <Window title="IsHexColorLight.vim">
-      <div className="window">
-        <div className="header">
-          <div className="traffic-lights">
-            <span className="traffic-light-button close" />
-            <span className="traffic-light-button minimize" />
-            <span className="traffic-light-button fullscreen" />
-          </div>
-          <div className="title">{title}</div>
+    <div className="window">
+      <div className="header">
+        <div className="traffic-lights">
+          <span className="traffic-light-button close" />
+          <span className="traffic-light-button minimize" />
+          <span className="traffic-light-button fullscreen" />
         </div>
-        {children}
+        <div className="title">{title}</div>
       </div>
+      {children}
 
       <style jsx>{`
         .window {
@@ -71,6 +69,6 @@ export default function Window({children, title}: WindowProps) {
           margin-left: 8px;
         }
       `}</style>
-    </Window>
+    </div>
   );
 }

@@ -4,6 +4,7 @@ import Gutter from "./Gutter";
 import {useFragment} from "react-relay";
 import {PreviewFragment$key} from "./__generated__/PreviewFragment.graphql";
 import StatusLine from "./StatusLine";
+import Window from "./Window";
 
 export const PreviewFragment = graphql`
   fragment PreviewFragment on Variant {
@@ -28,18 +29,20 @@ export default function Preview({colorscheme, bufferName}: PreviewProps) {
   );
 
   return (
-    <div className="preview">
-      <div className="code">
-        <Gutter numberOfLines={12} activeLine={6} colors={colors} />
-        <CodeSnippet colors={colors} />
+    <Window title="IsHexColorLight.vim">
+      <div className="preview">
+        <div className="code">
+          <Gutter numberOfLines={12} activeLine={6} colors={colors} />
+          <CodeSnippet colors={colors} />
+        </div>
+        <StatusLine
+          bufferName={bufferName}
+          colors={colors}
+          percentage={50}
+          activeLine={6}
+          numberOfLines={12}
+        />
       </div>
-      <StatusLine
-        bufferName={bufferName}
-        colors={colors}
-        percentage={50}
-        activeLine={6}
-        numberOfLines={12}
-      />
 
       <style jsx>{`
         .preview {
@@ -52,6 +55,6 @@ export default function Preview({colorscheme, bufferName}: PreviewProps) {
           display: flex;
         }
       `}</style>
-    </div>
+    </Window>
   );
 }

@@ -12,6 +12,7 @@ import translucid from "./util/translucid";
 import withId from "./util/withId";
 import dedent from "ts-dedent";
 import forwardPaginationHelper from "./util/forwardPaginationHelper";
+import anyExists from "./util/anyExists";
 
 const exec = promisify(childProcess.exec);
 
@@ -136,9 +137,15 @@ export async function scrapeColorscheme(name, owner) {
   // Fetch this colorscheme's README file.
   // GitHub's GraphQL API provides no easy way to do this.
   let readme;
-  try {
-    readme = await readFile(join(tmpColorschemeDir, "README.md"), "utf8");
-  } catch {}
+  const readmeFile = await anyExists(
+    // All of these can be valid readme files
+    ["README.md", "README", "readme.md", "readme"].map((readmeName) =>
+      join(tmpColorschemeDir, readmeName),
+    ),
+  );
+  if (readmeFile) {
+    readme = await readFile(readmeFile, "utf8");
+  }
 
   await rmTmpColorschemeDir();
   const {description, stargazerCount, url, createdAt, updatedAt, parent} =
@@ -172,23 +179,25 @@ export async function getColorschemes(
   const collection = db.collection("colorschemes");
   const cursor = collection.find();
 
-  if (query) {
-    cursor.filter({
-      $text: {
-        $search: query,
-      },
-    });
-  }
+  cursor.filter(
+    Object.assign(
+      {},
 
-  if (background) {
-    cursor.filter({
-      variants: {
-        $elemMatch: {
-          background: background.toLowerCase(),
+      query && {
+        $text: {
+          $search: query,
         },
       },
-    });
-  }
+
+      background && {
+        variants: {
+          $elemMatch: {
+            background: background.toLowerCase(),
+          },
+        },
+      },
+    ),
+  );
 
   if (orderBy === "MOST_POPULAR") {
     cursor.sort({stars: -1});

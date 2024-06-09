@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import {Suspense} from "react";
-import ColorschemesSkelectonGrid from "./ColorschemesSkeletonGrid";
+import ColorschemesGridSkeleton from "./ColorschemesGridSkeleton";
 import ColorschemesGrid from "./ColorschemesGrid";
 import Button from "@/components/Button";
 import UploadIcon from "@/assets/upload.svg";
@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div>
       <Header />
-      <Suspense fallback={<ColorschemesSkelectonGrid />}>
+      <Suspense fallback={<ColorschemesGridSkeleton />}>
         <ColorschemesGrid />
       </Suspense>
       <div className="floating">

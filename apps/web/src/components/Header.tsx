@@ -123,6 +123,7 @@ export default function Header({hideFilters: disableFilters}: HeaderProps) {
           gap: 2rem;
           box-shadow: inset 0 -1px 0 0 transparent;
           transition: box-shadow 0.15s;
+          height: 56px;
         }
 
         .scrolled {

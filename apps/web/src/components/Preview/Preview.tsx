@@ -5,12 +5,19 @@ import {useFragment} from "react-relay";
 import {PreviewFragment$key} from "./__generated__/PreviewFragment.graphql";
 import StatusLine from "./StatusLine";
 import Window from "./Window";
+import Colors from "./Colors";
+import inferMainVariant from "@/inferMainVariant";
 
 export const PreviewFragment = graphql`
-  fragment PreviewFragment on Variant {
-    colorGroups {
+  fragment PreviewFragment on Colorscheme {
+    name
+    variants {
       name
-      hexCode
+      background
+      colorGroups {
+        name
+        hexCode
+      }
     }
   }
 `;
@@ -22,25 +29,33 @@ export interface PreviewProps {
 
 export default function Preview({colorscheme, bufferName}: PreviewProps) {
   const data = useFragment(PreviewFragment, colorscheme);
+  const variant = inferMainVariant(data);
+  const numberOfLines = 12;
+  const activeLine = 6;
+  const percentage = Math.round((activeLine * 100) / numberOfLines);
 
-  const colors = data.colorGroups.reduce(
+  const colors = variant.colorGroups.reduce<Colors>(
     (acc, cur) => ({...acc, [cur.name]: cur.hexCode}),
-    {} as Record<string, string>,
+    {},
   );
 
   return (
-    <Window title="IsHexColorLight.vim">
+    <Window title={bufferName}>
       <div className="preview">
         <div className="code">
-          <Gutter numberOfLines={12} activeLine={6} colors={colors} />
+          <Gutter
+            numberOfLines={numberOfLines}
+            activeLine={activeLine}
+            colors={colors}
+          />
           <CodeSnippet colors={colors} />
         </div>
         <StatusLine
           bufferName={bufferName}
           colors={colors}
-          percentage={50}
-          activeLine={6}
-          numberOfLines={12}
+          percentage={percentage}
+          activeLine={activeLine}
+          numberOfLines={numberOfLines}
         />
       </div>
 

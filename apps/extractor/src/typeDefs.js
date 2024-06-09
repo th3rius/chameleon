@@ -297,7 +297,7 @@ export default `
       """
       Ordering options for the returned colorschemes.
       """
-      orderBy: ColorschemeOrder = POPULARITY
+      orderBy: ColorschemeOrder = MOST_POPULAR
     ): ColorschemeConnection!
 
     """

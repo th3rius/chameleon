@@ -1,13 +1,13 @@
 import Skeleton from "@/components/Skeleton";
 
-export default function ColorschemesSkelectonGrid() {
+export default function ColorschemesGridSkeleton() {
   const skeletons = Array.from({length: 20}).map((_skeleton, i) => i);
 
   return (
     <div className="colorschemes">
       {skeletons.map((i) => (
-        <div className="skeleton-preview" key={i}>
-          <Skeleton height={366} />
+        <div key={i}>
+          <Skeleton height={364} />
           <div className="skeleton-info">
             <Skeleton width="50%" height={36} />
           </div>
@@ -19,11 +19,8 @@ export default function ColorschemesSkelectonGrid() {
           display: grid;
           grid-template-columns: 100%;
           padding: 32px;
-          gap: 30px;
-        }
-
-        .skeleton-preview {
-          padding: 12px;
+          gap: 48px;
+          margin-bottom: 32px;
         }
 
         .skeleton-info {

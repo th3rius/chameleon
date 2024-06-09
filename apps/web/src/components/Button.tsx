@@ -22,6 +22,7 @@ export default function Button({children, suffix}: ButtonProps) {
           transition-property: background-color color;
           display: flex;
           align-items: center;
+          border: none;
         }
 
         .content {

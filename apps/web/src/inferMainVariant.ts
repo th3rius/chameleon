@@ -1,9 +1,11 @@
-import {ColorschemesGridQuery$data} from "./__generated__/ColorschemesGridQuery.graphql";
+import {PreviewFragment$data} from "./components/Preview/__generated__/PreviewFragment.graphql";
 
-type ColorschemeNode =
-  ColorschemesGridQuery$data["colorschemes"]["edges"][number]["node"];
-
-export default function inferMainColorscheme(colorscheme: ColorschemeNode) {
+/**
+ * Attempts to deduce and return the main variant of a colorscheme according to
+ * popular naming conventions and according to the current background filter.
+ * Returns the first if unable to infer.
+ */
+export default function inferMainVariant(colorscheme: PreviewFragment$data) {
   const {variants} = colorscheme;
 
   const matchName = (a: string, b: string) =>

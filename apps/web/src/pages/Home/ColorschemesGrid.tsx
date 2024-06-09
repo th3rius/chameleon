@@ -3,29 +3,35 @@ import {PreloadedQuery, usePreloadedQuery} from "react-relay";
 import {useLoaderData, Link} from "react-router-dom";
 import {graphql} from "relay-runtime";
 import Preview from "@/components/Preview";
-import inferMainColorscheme from "@/pages/Home/inferMainColorscheme";
 import {ColorschemesGridQuery} from "./__generated__/ColorschemesGridQuery.graphql";
 import StarIcon from "@/assets/star.svg";
+import Tip from "@/components/Tip";
 
 export default function ColorschemesGrid() {
   const queryRef = useLoaderData() as PreloadedQuery<ColorschemesGridQuery>;
 
   const data = usePreloadedQuery<ColorschemesGridQuery>(
     graphql`
-      query ColorschemesGridQuery($background: Background) {
-        colorschemes(background: $background) {
+      query ColorschemesGridQuery(
+        $background: Background
+        $orderBy: ColorschemeOrder
+        $query: String
+      ) {
+        colorschemes(
+          background: $background
+          orderBy: $orderBy
+          query: $query
+        ) {
           edges {
             node {
               id
               owner
               name
-              description
               stars
               updatedAt
+              ...PreviewFragment
               variants {
-                name
-                background
-                ...PreviewFragment
+                ...TipFragment
               }
             }
           }
@@ -40,12 +46,13 @@ export default function ColorschemesGrid() {
     <div className="colorschemes">
       {colorschemeEdges.map(({node}) => {
         return (
-          <Link key={node.id} className="colorscheme-preview">
-            <Preview
-              bufferName="IsHexColorLight.vim"
-              colorscheme={inferMainColorscheme(node)}
-            />
-            <div className="colorscheme-info">
+          <Link
+            to={`/${encodeURIComponent(node.id)}`}
+            className="preview"
+            key={node.id}
+          >
+            <Preview bufferName="IsHexColorLight.vim" colorscheme={node} />
+            <div className="info">
               <div className="owner-and-stars">
                 <span>{node.owner}</span>
                 <div className="stars">
@@ -53,8 +60,17 @@ export default function ColorschemesGrid() {
                   <span>{node.stars}</span>
                 </div>
               </div>
-              <h2 className="name">{node.name}</h2>
-              <span className="last-commit">
+              <div className="name-and-tips">
+                <h2 className="name">{node.name}</h2>
+                {node.variants.length > 1 && (
+                  <div className="tips">
+                    {node.variants.map((variant) => (
+                      <Tip variant={variant} />
+                    ))}
+                  </div>
+                )}
+              </div>
+              <span>
                 last commit{" "}
                 <strong>{formatDistanceToNow(node.updatedAt)}</strong> ago
               </span>
@@ -68,16 +84,30 @@ export default function ColorschemesGrid() {
           display: grid;
           grid-template-columns: 100%;
           padding: 32px;
-          gap: 30px;
+          gap: 48px;
+          margin-bottom: 32px;
         }
 
-        .colorscheme-info {
+        .info {
           margin-top: 16px;
         }
 
         .owner-and-stars {
           display: flex;
           justify-content: space-between;
+        }
+
+        .name-and-tips {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .tips {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+          padding-top: 6px;
+          gap: 0.3rem;
         }
 
         .stars {
@@ -87,6 +117,7 @@ export default function ColorschemesGrid() {
 
         .name {
           margin: 0;
+          flex: 1;
         }
 
         @media (min-width: 992px) {
@@ -97,16 +128,15 @@ export default function ColorschemesGrid() {
       `}</style>
 
       <style jsx global>{`
-        .colorscheme-preview {
+        a.preview {
           border-radius: 4px;
           cursor: pointer;
-          padding: 12px;
           color: inherit;
           text-decoration: none;
         }
 
         @media (hover: hover) {
-          .colorscheme-preview:hover .name {
+          .preview:hover .name {
             text-decoration: underline;
           }
         }

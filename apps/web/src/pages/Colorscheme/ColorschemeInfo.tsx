@@ -4,7 +4,7 @@ import {ColorschemeInfoQuery} from "./__generated__/ColorschemeInfoQuery.graphql
 import StarIcon from "@/assets/star.svg";
 import {formatDistanceToNow} from "date-fns";
 import Preview from "@/components/Preview";
-import Tip from "@/components/Tip";
+import Brick from "@/components/Brick";
 import GithubIcon from "@/assets/github.svg";
 
 export default function ColorschemeInfo() {
@@ -21,7 +21,7 @@ export default function ColorschemeInfo() {
           url
           updatedAt
           variants {
-            ...TipFragment
+            ...BrickFragment
           }
           ...PreviewFragment
         }
@@ -43,12 +43,12 @@ export default function ColorschemeInfo() {
           <span>{colorscheme.stars}</span>
         </div>
       </div>
-      <div className="name-and-tips">
+      <div className="name-and-bricks">
         <h2 className="name">{colorscheme.name}</h2>
         {colorscheme.variants.length > 1 && (
-          <div className="tips">
+          <div className="bricks">
             {colorscheme.variants.map((variant) => (
-              <Tip variant={variant} />
+              <Brick variant={variant} />
             ))}
           </div>
         )}
@@ -66,8 +66,8 @@ export default function ColorschemeInfo() {
         on GitHub <GithubIcon />
       </a>
       <div className="colorschemes">
-        <Preview bufferName="IsHexColorLight.vim" colorscheme={colorscheme} />
-        <Preview bufferName="IsHexColorLight.vim" colorscheme={colorscheme} />
+        <Preview colorscheme={colorscheme} />
+        <Preview colorscheme={colorscheme} />
       </div>
 
       <style jsx>{`
@@ -78,12 +78,12 @@ export default function ColorschemeInfo() {
           margin-bottom: 32px;
         }
 
-        .name-and-tips {
+        .name-and-bricks {
           display: flex;
           justify-content: space-between;
         }
 
-        .tips {
+        .bricks {
           display: flex;
           flex-wrap: wrap;
           justify-content: flex-end;
@@ -102,7 +102,8 @@ export default function ColorschemeInfo() {
         }
 
         .colorschemes {
-          margin: 32px 0;
+          margin-top: 16px;
+          margin-bottom: 32px;
           display: grid;
           gap: 2rem;
         }
@@ -130,6 +131,7 @@ export default function ColorschemeInfo() {
           margin: 16px 0;
           color: black;
           text-decoration: none;
+          width: max-content;
         }
 
         @media (hover: hover) {

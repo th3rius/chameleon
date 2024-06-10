@@ -1,10 +1,11 @@
 import {PropsWithChildren} from "react";
 
 export interface WindowProps extends PropsWithChildren {
-  title?: string;
+  title: string;
+  editor: string;
 }
 
-export default function Window({children, title}: WindowProps) {
+export default function Window({children, title, editor}: WindowProps) {
   return (
     <div className="window">
       <div className="header">
@@ -13,7 +14,8 @@ export default function Window({children, title}: WindowProps) {
           <span className="traffic-light-button minimize" />
           <span className="traffic-light-button fullscreen" />
         </div>
-        <div className="title">{title}</div>
+        <span className="title">{title}</span>
+        <span className="editor">{editor}</span>
       </div>
       {children}
 
@@ -31,16 +33,20 @@ export default function Window({children, title}: WindowProps) {
           display: flex;
           align-items: center;
           background: white;
+          font-size: 12px;
+          color: #666;
         }
 
         .title {
-          font-size: 12px;
           display: flex;
-          color: #666;
           height: 36px;
           align-items: center;
           width: 100%;
           justify-content: center;
+        }
+
+        .editor {
+          margin-right: 12px;
         }
 
         .traffic-lights {

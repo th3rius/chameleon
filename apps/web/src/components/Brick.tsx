@@ -1,9 +1,9 @@
 import {graphql} from "relay-runtime";
 import {useFragment} from "react-relay";
-import {TipFragment$key} from "./__generated__/TipFragment.graphql";
+import {BrickFragment$key} from "./__generated__/BrickFragment.graphql";
 
-export const TipFragment = graphql`
-  fragment TipFragment on Variant {
+export const BrickFragment = graphql`
+  fragment BrickFragment on Variant {
     colorGroups {
       name
       hexCode
@@ -11,12 +11,12 @@ export const TipFragment = graphql`
   }
 `;
 
-export interface TipProps {
-  variant: TipFragment$key;
+export interface BrickProps {
+  variant: BrickFragment$key;
 }
 
-export default function Tip({variant}: TipProps) {
-  const {colorGroups} = useFragment(TipFragment, variant);
+export default function Brick({variant}: BrickProps) {
+  const {colorGroups} = useFragment(BrickFragment, variant);
 
   const {hexCode: bg} = colorGroups.find(({name}) => name === "NormalBg")!;
   const {hexCode: fg} = colorGroups.find(({name}) => name === "NormalFg")!;
@@ -27,7 +27,7 @@ export default function Tip({variant}: TipProps) {
         .tip {
           width: 12px;
           height: 6px;
-          border-radius: 4px;
+          border-radius: 25%;
           background: ${bg};
           border: 1px solid ${fg};
         }

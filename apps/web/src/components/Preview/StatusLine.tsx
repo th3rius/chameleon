@@ -1,7 +1,5 @@
-import Colors from "./Colors";
-
 export interface StatusLineProps {
-  colors: Colors;
+  colors: Record<string, string>;
   bufferName: string;
   percentage: number;
   numberOfLines: number;

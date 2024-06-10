@@ -1,7 +1,5 @@
-import Colors from "./Colors";
-
 export interface CodeSnippetProps {
-  colors: Colors;
+  colors: Record<string, string>;
 }
 
 export default function CodeSnippet({colors}: CodeSnippetProps) {

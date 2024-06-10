@@ -6,7 +6,7 @@ export default function Colorscheme() {
   return (
     <div>
       <Header hideFilters />
-      <Suspense>
+      <Suspense fallback={<div>Carregando...</div>}>
         <ColorschemeInfo />
       </Suspense>
     </div>

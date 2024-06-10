@@ -11,8 +11,8 @@ import cartesian from "fast-cartesian";
 import translucid from "./util/translucid";
 import withId from "./util/withId";
 import dedent from "ts-dedent";
-import forwardPaginationHelper from "./util/forwardPaginationHelper";
 import anyExists from "./util/anyExists";
+import opaque from "./util/opaque";
 
 const exec = promisify(childProcess.exec);
 
@@ -177,11 +177,17 @@ export async function getColorschemes(
   orderBy,
 ) {
   const collection = db.collection("colorschemes");
-  const cursor = collection.find();
+  const cursor = collection.find().limit(first + 1);
 
   cursor.filter(
     Object.assign(
       {},
+
+      after && {
+        _id: {
+          $gt: translucid(after),
+        },
+      },
 
       query && {
         $text: {
@@ -205,7 +211,36 @@ export async function getColorschemes(
     cursor.sort({updatedAt: -1});
   }
 
-  return forwardPaginationHelper(cursor, first, after);
+  const colorschemes = await cursor.toArray();
+  const pageSize = colorschemes.length;
+  const [firstNode] = colorschemes;
+  const lastNode = colorschemes[pageSize - 1];
+
+  // This is a trick to determine whether or not a next page is available:
+  // Fetch one more extra document than requested to check if pagination can
+  // continue, then remove it from the results if so.
+  // Otherwise if `pageSize` is smaller than `first`, there will only be at
+  // most `pageSize` items.
+  const hasNextPage = pageSize > first;
+  if (hasNextPage) {
+    colorschemes.pop();
+  }
+
+  return {
+    edges: colorschemes.map((colorscheme) => ({
+      cursor: opaque(colorscheme._id),
+      node: withId(colorscheme),
+    })),
+    pageInfo: {
+      endCursor: opaque(lastNode?._id),
+      hasNextPage,
+      // The relay server specification requires this field to be present, but
+      // populating it is optional, and it is not very useful when paginating
+      // forward.
+      hasPreviousPage: false,
+      startCursor: opaque(firstNode?._id),
+    },
+  };
 }
 
 export async function getColorscheme(db, id) {

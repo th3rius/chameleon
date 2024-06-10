@@ -5,7 +5,7 @@ import {graphql} from "relay-runtime";
 import Preview from "@/components/Preview";
 import {ColorschemesGridQuery} from "./__generated__/ColorschemesGridQuery.graphql";
 import StarIcon from "@/assets/star.svg";
-import Tip from "@/components/Tip";
+import Brick from "@/components/Brick";
 
 export default function ColorschemesGrid() {
   const queryRef = useLoaderData() as PreloadedQuery<ColorschemesGridQuery>;
@@ -31,7 +31,7 @@ export default function ColorschemesGrid() {
               updatedAt
               ...PreviewFragment
               variants {
-                ...TipFragment
+                ...BrickFragment
               }
             }
           }
@@ -51,7 +51,7 @@ export default function ColorschemesGrid() {
             className="preview"
             key={node.id}
           >
-            <Preview bufferName="IsHexColorLight.vim" colorscheme={node} />
+            <Preview colorscheme={node} />
             <div className="info">
               <div className="owner-and-stars">
                 <span>{node.owner}</span>
@@ -60,12 +60,12 @@ export default function ColorschemesGrid() {
                   <span>{node.stars}</span>
                 </div>
               </div>
-              <div className="name-and-tips">
+              <div className="name-and-bricks">
                 <h2 className="name">{node.name}</h2>
                 {node.variants.length > 1 && (
-                  <div className="tips">
+                  <div className="bricks">
                     {node.variants.map((variant) => (
-                      <Tip variant={variant} />
+                      <Brick variant={variant} />
                     ))}
                   </div>
                 )}
@@ -97,12 +97,12 @@ export default function ColorschemesGrid() {
           justify-content: space-between;
         }
 
-        .name-and-tips {
+        .name-and-bricks {
           display: flex;
           justify-content: space-between;
         }
 
-        .tips {
+        .bricks {
           display: flex;
           flex-wrap: wrap;
           justify-content: flex-end;

@@ -1,10 +1,9 @@
-import Colors from "./Colors";
 import clsx from "clsx";
 
 export interface GutterProps {
   numberOfLines: number;
   activeLine: number;
-  colors: Colors;
+  colors: Record<string, string>;
 }
 
 export default function Gutter({

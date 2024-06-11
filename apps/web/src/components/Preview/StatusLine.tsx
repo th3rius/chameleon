@@ -32,6 +32,8 @@ export default function StatusLine({
           background: ${colors.StatusLineBg || colors.NormalBg};
           gap: 0.5rem;
           padding-right: 0.5rem;
+          overflow-x: auto;
+          white-space: nowrap;
         }
 
         .statusline > span {

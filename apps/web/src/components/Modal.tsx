@@ -75,6 +75,7 @@ export default function Modal({children, onClose, active = false}: ModalProps) {
                 background: white;
                 width: 100%;
                 max-height: min(800px, 80vh);
+                overflow: hidden;
               }
 
               .container-enter > .backdrop {

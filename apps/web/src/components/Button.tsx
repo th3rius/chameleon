@@ -1,12 +1,20 @@
 import {PropsWithChildren, ReactNode} from "react";
+import clsx from "clsx";
 
 export interface ButtonProps extends PropsWithChildren {
   suffix?: ReactNode;
+  secondary?: boolean;
+  disabled?: boolean;
 }
 
-export default function Button({children, suffix}: ButtonProps) {
+export default function Button({
+  children,
+  secondary,
+  disabled,
+  suffix,
+}: ButtonProps) {
   return (
-    <button className="button">
+    <button className={clsx("button", {secondary})} disabled={disabled}>
       <span className="content">{children}</span>
       {suffix && <div className="suffix">{suffix}</div>}
 
@@ -25,6 +33,19 @@ export default function Button({children, suffix}: ButtonProps) {
           border: none;
         }
 
+        .secondary {
+          background: white;
+          color: black;
+          box-shadow: 0 0 0 1px rgb(0 0 0 / 8%);
+        }
+
+        .button[disabled] {
+          cursor: not-allowed;
+          background: hsla(0, 0%, 95%, 1);
+          color: hsla(0, 0%, 56%, 1);
+          box-shadow: 0 0 0 1px hsla(0, 0%, 92%, 1);
+        }
+
         .content {
           padding: 0 6px;
         }
@@ -34,8 +55,13 @@ export default function Button({children, suffix}: ButtonProps) {
         }
 
         @media (hover: hover) {
-          .button:hover {
+          .button:hover:not([disabled]) {
             background: #383838;
+          }
+
+          .button.secondary:hover:not([disabled]) {
+            background: rgb(0 0 0 / 8%);
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
           }
         }
       `}</style>

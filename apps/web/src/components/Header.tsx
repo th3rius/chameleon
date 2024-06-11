@@ -16,7 +16,7 @@ export interface HeaderProps {
 export default function Header({hideFilters: disableFilters}: HeaderProps) {
   const searchBarRef = useRef<SearchBarType>(null);
 
-  const [hasScrolled, setHasScrolled] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(window.scrollY > 0);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const background = searchParams.get("bg") || "all";

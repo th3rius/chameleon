@@ -58,6 +58,7 @@ export default function ColorschemeInfo() {
         last commit{" "}
         <strong>{formatDistanceToNow(colorscheme.updatedAt)}</strong> ago
       </span>
+      <br />
       <a className="github" href={colorscheme.url} target="_blank">
         view{" "}
         <strong>
@@ -108,16 +109,6 @@ export default function ColorschemeInfo() {
           gap: 2rem;
         }
 
-        .switcher {
-          margin: 32px 0;
-          border-radius: 8px;
-          border: 1px solid rgb(0 0 0 / 8%);
-          padding: 1.5rem;
-          width: min-content;
-          display: flex;
-          gap: 24px;
-        }
-
         @media (min-width: 768px) {
           .colorschemes:not(:has(> :only-child)) {
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -127,11 +118,10 @@ export default function ColorschemeInfo() {
 
       <style jsx global>{`
         .github {
-          display: block;
+          display: inline-block;
           margin: 16px 0;
           color: black;
           text-decoration: none;
-          width: max-content;
         }
 
         @media (hover: hover) {

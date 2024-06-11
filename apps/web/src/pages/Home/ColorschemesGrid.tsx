@@ -64,8 +64,8 @@ export default function ColorschemesGrid() {
                 <h2 className="name">{node.name}</h2>
                 {node.variants.length > 1 && (
                   <div className="bricks">
-                    {node.variants.map((variant) => (
-                      <Brick variant={variant} />
+                    {node.variants.map((variant, i) => (
+                      <Brick key={i} variant={variant} />
                     ))}
                   </div>
                 )}

@@ -35,13 +35,13 @@ export default function Window({children, title, editor}: WindowProps) {
           background: white;
           font-size: 12px;
           color: #666;
+          justify-content: space-between;
         }
 
         .title {
           display: flex;
           height: 36px;
           align-items: center;
-          width: 100%;
           justify-content: center;
         }
 
@@ -51,7 +51,8 @@ export default function Window({children, title, editor}: WindowProps) {
 
         .traffic-lights {
           margin-left: 12px;
-          position: absolute;
+          display: flex;
+          align-items: center;
         }
 
         .traffic-light-button {

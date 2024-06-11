@@ -47,8 +47,8 @@ export default function ColorschemeInfo() {
         <h2 className="name">{colorscheme.name}</h2>
         {colorscheme.variants.length > 1 && (
           <div className="bricks">
-            {colorscheme.variants.map((variant) => (
-              <Brick variant={variant} />
+            {colorscheme.variants.map((variant, i) => (
+              <Brick variant={variant} key={i} />
             ))}
           </div>
         )}

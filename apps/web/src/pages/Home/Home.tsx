@@ -10,20 +10,27 @@ export default function Home() {
   const [submitModalActive, setSubmitModalActive] = useState(false);
 
   return (
-    <div>
+    <>
       <Header />
-      <Suspense fallback={<ColorschemesGridSkeleton />}>
-        <ColorschemesGrid />
-      </Suspense>
-      <div className="floating" onClick={() => setSubmitModalActive(true)}>
-        <Button suffix={<UploadIcon />}>Submit</Button>
+      <div className="container">
+        <Suspense fallback={<ColorschemesGridSkeleton />}>
+          <ColorschemesGrid />
+        </Suspense>
+        <div className="floating" onClick={() => setSubmitModalActive(true)}>
+          <Button suffix={<UploadIcon />}>Submit</Button>
+        </div>
+        <SubmitColorscheme
+          active={submitModalActive}
+          onClose={() => setSubmitModalActive(false)}
+        />
       </div>
-      <SubmitColorscheme
-        active={submitModalActive}
-        onClose={() => setSubmitModalActive(false)}
-      />
 
       <style jsx>{`
+        .container {
+          padding: 32px;
+          margin-bottom: 32px;
+        }
+
         .floating {
           position: fixed;
           right: 0;
@@ -32,6 +39,6 @@ export default function Home() {
           font-size: 16px;
         }
       `}</style>
-    </div>
+    </>
   );
 }

@@ -36,7 +36,9 @@ function homeLoader({request}: LoaderFunctionArgs) {
 
 function colorschemeLoader({params}: LoaderFunctionArgs) {
   const {id} = params;
-  return loadQuery(relayEnvironment, ColorschemeInfoQuery, {id});
+  return loadQuery(relayEnvironment, ColorschemeInfoQuery, {
+    id: decodeURIComponent(id!),
+  });
 }
 
 const router = createBrowserRouter(

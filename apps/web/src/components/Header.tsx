@@ -22,7 +22,7 @@ export default function Header({hideFilters: disableFilters}: HeaderProps) {
   const background = searchParams.get("bg") || "all";
   const editor = searchParams.get("e") || "all";
   const orderBy = searchParams.get("s") || "popularity";
-  const query = searchParams.get("q") || undefined;
+  const query = searchParams.get("q") || "";
 
   const isLaptop = useMediaQuery("(min-width: 1024px)");
   const isLaptopLarge = useMediaQuery("(min-width: 1440px)");

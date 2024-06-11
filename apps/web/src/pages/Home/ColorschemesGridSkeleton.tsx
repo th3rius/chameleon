@@ -18,9 +18,7 @@ export default function ColorschemesGridSkeleton() {
         .colorschemes {
           display: grid;
           grid-template-columns: 100%;
-          padding: 32px;
           gap: 48px;
-          margin-bottom: 32px;
         }
 
         .skeleton-info {

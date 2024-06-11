@@ -212,9 +212,7 @@ export async function getColorschemes(
   }
 
   const colorschemes = await cursor.toArray();
-  const pageSize = colorschemes.length;
-  const [firstNode] = colorschemes;
-  const lastNode = colorschemes[pageSize - 1];
+  let pageSize = colorschemes.length;
 
   // This is a trick to determine whether or not a next page is available:
   // Fetch one more extra document than requested to check if pagination can
@@ -224,7 +222,11 @@ export async function getColorschemes(
   const hasNextPage = pageSize > first;
   if (hasNextPage) {
     colorschemes.pop();
+    pageSize--;
   }
+
+  const [firstNode] = colorschemes;
+  const lastNode = colorschemes[pageSize - 1];
 
   return {
     edges: colorschemes.map((colorscheme) => ({

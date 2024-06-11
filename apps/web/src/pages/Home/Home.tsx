@@ -4,14 +4,10 @@ import ColorschemesGridSkeleton from "./ColorschemesGridSkeleton";
 import ColorschemesGrid from "./ColorschemesGrid";
 import Button from "@/components/Button";
 import UploadIcon from "@/assets/upload.svg";
-import SubmitColorscheme from "../../components/SubmitColorscheme";
+import SubmitColorscheme from "@/components/SubmitColorscheme";
 
 export default function Home() {
   const [submitModalActive, setSubmitModalActive] = useState(false);
-
-  function handleModal() {
-    setSubmitModalActive(true);
-  }
 
   return (
     <div>
@@ -19,7 +15,7 @@ export default function Home() {
       <Suspense fallback={<ColorschemesGridSkeleton />}>
         <ColorschemesGrid />
       </Suspense>
-      <div className="floating" onClick={handleModal}>
+      <div className="floating" onClick={() => setSubmitModalActive(true)}>
         <Button suffix={<UploadIcon />}>Submit</Button>
       </div>
       <SubmitColorscheme

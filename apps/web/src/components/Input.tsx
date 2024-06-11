@@ -1,11 +1,27 @@
+import {FormEvent} from "react";
+
 export interface InputProps {
+  value?: string;
+  onChange?: (ev: FormEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  required?: boolean;
 }
 
-export default function Input({placeholder}: InputProps) {
+export default function Input({
+  placeholder,
+  value,
+  onChange,
+  required,
+}: InputProps) {
   return (
     <>
-      <input className="input" placeholder={placeholder} />
+      <input
+        className="input"
+        placeholder={placeholder}
+        required={required}
+        value={value}
+        onChange={onChange}
+      />
 
       <style jsx>{`
         .input {

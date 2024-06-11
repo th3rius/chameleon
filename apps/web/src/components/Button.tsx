@@ -1,10 +1,12 @@
-import {PropsWithChildren, ReactNode} from "react";
+import {MouseEvent, PropsWithChildren, ReactNode} from "react";
 import clsx from "clsx";
 
 export interface ButtonProps extends PropsWithChildren {
   suffix?: ReactNode;
   secondary?: boolean;
   disabled?: boolean;
+  onClick?: (ev: MouseEvent<HTMLButtonElement>) => void;
+  type?: "button" | "submit" | "reset";
 }
 
 export default function Button({
@@ -12,9 +14,16 @@ export default function Button({
   secondary,
   disabled,
   suffix,
+  type,
+  onClick,
 }: ButtonProps) {
   return (
-    <button className={clsx("button", {secondary})} disabled={disabled}>
+    <button
+      className={clsx("button", {secondary})}
+      disabled={disabled}
+      type={type}
+      onClick={onClick}
+    >
       <span className="content">{children}</span>
       {suffix && <div className="suffix">{suffix}</div>}
 

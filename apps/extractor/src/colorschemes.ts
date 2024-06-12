@@ -13,10 +13,16 @@ import withId from "./util/withId";
 import dedent from "ts-dedent";
 import anyExists from "./util/anyExists";
 import opaque from "./util/opaque";
+import type {Repository} from "@octokit/graphql-schema";
+import {Db} from "mongodb";
+import ColorschemeQueryArgs from "./types/ColorschemeQueryArgs";
+import ColorschemesQueryArgs from "./types/ColorschemesQueryArgs";
+import PreviewQueryArgs from "./types/PreviewQueryArgs";
+import {SubmitMutationArgs} from "./types/SubmitMutationArgs";
 
 const exec = promisify(childProcess.exec);
 
-export async function scrapeColorscheme(name, owner) {
+export async function scrapeColorscheme({owner, name}: PreviewQueryArgs) {
   // Create a temporary directory on the filesystem to use as workpsace.
   const tmpColorschemeDir = await mkdtemp(join(tmpdir(), "ch-"));
   const rmTmpColorschemeDir = () => rm(tmpColorschemeDir, {recursive: true});
@@ -24,7 +30,7 @@ export async function scrapeColorscheme(name, owner) {
   // Fetch GitHub information about the repository
   let repository;
   try {
-    ({repository} = await octokit.graphql(
+    ({repository} = await octokit.graphql<{repository: Repository}>(
       `
         query colorschemeRepository($owner: String!, $name: String!) {
           repository(owner: $owner, name: $name) {
@@ -169,12 +175,8 @@ export async function scrapeColorscheme(name, owner) {
 }
 
 export async function getColorschemes(
-  db,
-  query,
-  background,
-  first,
-  after,
-  orderBy,
+  db: Db,
+  {query, background, first, after, orderBy}: ColorschemesQueryArgs,
 ) {
   const collection = db.collection("colorschemes");
   const cursor = collection.find().limit(first + 1);
@@ -245,16 +247,19 @@ export async function getColorschemes(
   };
 }
 
-export async function getColorscheme(db, id) {
+export async function getColorscheme(db: Db, {id}: ColorschemeQueryArgs) {
   const collection = db.collection("colorschemes");
   const colorscheme = await collection.findOne({_id: translucid(id)});
 
   return withId(colorscheme);
 }
 
-export async function submitColorscheme(db, name, owner) {
+export async function submitColorscheme(
+  db: Db,
+  {owner, name}: SubmitMutationArgs,
+) {
   const collection = db.collection("colorschemes");
-  const colorscheme = await scrapeColorscheme(name, owner);
+  const colorscheme = await scrapeColorscheme({name, owner});
 
   const submission = await collection.findOneAndUpdate(
     {name, owner},

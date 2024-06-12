@@ -10,8 +10,9 @@ import resolvers from "./resolvers";
 import {makeExecutableSchema} from "@graphql-tools/schema";
 import {graphqlHTTP} from "koa-graphql";
 import db from "./db";
-import {cyan} from "chalk";
+import chalk from "chalk";
 import logger from "koa-logger";
+import type {AddressInfo} from "net";
 
 const schema = makeExecutableSchema({
   typeDefs,
@@ -49,9 +50,9 @@ async function bootstrap() {
 
   const server = http.createServer(app.callback());
   server.listen(PORT, HOST, () => {
-    const {address, port} = server.address();
+    const {address, port} = server.address() as AddressInfo;
     console.log(
-      `Server is running at ${cyan(`http://${address}:${port}`)}! 👾`,
+      `Server is running at ${chalk.cyan(`http://${address}:${port}`)}! 👾`,
     );
   });
 }

@@ -1,8 +1,8 @@
 import "dotenv/config";
 import db from "../src/db";
 import ora from "ora";
-import {cyan} from "chalk";
-import url from "url";
+import chalk from "chalk";
+import {URL} from "url";
 
 const {MONGODB_URI} = process.env;
 
@@ -10,9 +10,9 @@ async function setup() {
   const mongoDb = await db();
   const collection = mongoDb.collection("colorschemes");
 
-  const {hostname, port, pathname} = url.parse(MONGODB_URI);
+  const {hostname, port, pathname} = new URL(MONGODB_URI!);
   ora(
-    `Creating indexes on database ${cyan(pathname ?? "test")} at ${cyan(`${hostname}:${port}`)}...`,
+    `Creating indexes on database ${chalk.cyan(pathname ?? "test")} at ${chalk.cyan(`${hostname}:${port}`)}...`,
   ).start();
 
   // Full-text search index

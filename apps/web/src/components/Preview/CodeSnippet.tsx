@@ -181,7 +181,7 @@ export default function CodeSnippet({colors}: CodeSnippetProps) {
         }
 
         .StatusLineFg {
-          color: ${colors.StatusLineFg};
+          color: ${colors.StatusLineFg || colors.NormalFg};
         }
 
         .StatusLineBg {
@@ -209,7 +209,7 @@ export default function CodeSnippet({colors}: CodeSnippetProps) {
         }
 
         .CursorLineBg {
-          background: ${colors.CursorLineBg || colors.LineNrBg};
+          background: ${colors.CursorLineBg || colors.LineNrBg || colors.NormalBg};
         }
 
         .CursorLineNrFg {

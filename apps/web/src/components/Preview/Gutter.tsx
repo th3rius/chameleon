@@ -26,8 +26,8 @@ export default function Gutter({
 
       <style jsx>{`
         .gutter {
-          background: ${colors.LineNrBg};
-          color: ${colors.StatusLineFg};
+          background: ${colors.LineNrBg || colors.NormalBg};
+          color: ${colors.StatusLineFg || colors.NormalFg};
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
@@ -40,8 +40,10 @@ export default function Gutter({
         }
 
         .active {
-          background: ${colors.CursorLineNrBg};
-          color: ${colors.CursorLineNrFg};
+          background: ${colors.CursorLineBg ||
+          colors.LineNrBg ||
+          colors.NormalBg};
+          color: ${colors.CursorLineNrFg || colors.LineNrFg};
         }
       `}</style>
     </div>

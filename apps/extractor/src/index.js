@@ -11,6 +11,7 @@ import {makeExecutableSchema} from "@graphql-tools/schema";
 import {graphqlHTTP} from "koa-graphql";
 import db from "./db";
 import {cyan} from "chalk";
+import logger from "koa-logger";
 
 const schema = makeExecutableSchema({
   typeDefs,
@@ -40,6 +41,7 @@ async function bootstrap() {
     }),
   );
 
+  app.use(logger());
   app.use(cors());
   app.use(bodyParser());
   app.use(router.routes());

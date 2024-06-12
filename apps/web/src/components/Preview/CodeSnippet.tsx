@@ -158,6 +158,9 @@ export default function CodeSnippet({colors}: CodeSnippetProps) {
 
         .code {
           padding: 0.5rem 0;
+          font-family: "Iosevka", monospace;
+          font-size: 16px;
+          line-height: 1.5;
         }
 
         .code > div {

@@ -23,7 +23,7 @@ Explore the GraphQL playground: https://api.chameleon.nocnitsa.com/playground/
 
 ## Prologue
 
-This project is my submission to [Woovi's code challenge](https://woovi.com/jobs/challenges/software-engineer/). I aimed to build something legitimately fun to toy around with whilst still being able showcasing the potential of GraphQL well, and I believe I landed at the right idea: a colorscheme database for my favorite text editor.
+This project is my submission to [Woovi's code challenge](https://woovi.com/jobs/challenges/software-engineer/). I aimed to build something genuinely fun to toy around with whilst still being able showcasing the potential of GraphQL well, and I believe I landed at the right idea: a colorscheme database for my favorite text editor.
 
 Features include:
 
@@ -97,7 +97,7 @@ npm run print-schema -w extractor
 
 ### Running the client
 
-Prepare the following environment variables:
+Prepare the following environment variables (can also be configred through `.env` files):
 
 | **Variable**         | **Required?** | **Description**       |
 | -------------------- | ------------- | --------------------- |

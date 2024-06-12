@@ -21,10 +21,12 @@ export default function InfiniteScrollTrigger({
 
   const observer = useRef<IntersectionObserver | null>(null);
   if (observer.current === null) {
-    observer.current = new IntersectionObserver(([firstEntry]) => {
-      if (firstEntry.isIntersecting) {
-        onIntersect();
-      }
+    observer.current = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          onIntersect();
+        }
+      });
     }, {});
   }
 

@@ -83,6 +83,10 @@ function ColorschemesGridPaginationContainer({
   const colorschemeEdges = data.colorschemes.edges;
   const hasNextPage = data.colorschemes.pageInfo.hasNextPage;
 
+  if (!colorschemeEdges.length) {
+    return <span>No colorschemes found.</span>;
+  }
+
   return (
     <>
       <div className="colorschemes">

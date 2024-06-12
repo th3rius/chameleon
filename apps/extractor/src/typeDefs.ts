@@ -307,7 +307,7 @@ export default `
       """
       Returns the first _n_ elements from the list.
       """
-      first: Int = 10
+      first: Int = 20
 
       """
       Returns the elements in the list that come after the specified cursor.

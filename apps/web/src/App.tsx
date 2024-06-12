@@ -1,59 +1,18 @@
-import ColorschemesGridQuery from "./pages/Home/__generated__/ColorschemesGridQuery.graphql";
-import ColorschemeInfoQuery from "./pages/Colorscheme/__generated__/ColorschemeInfoQuery.graphql";
 import Layout from "./components/Layout";
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  LoaderFunctionArgs,
   Route,
   RouterProvider,
 } from "react-router-dom";
-import {loadQuery, RelayEnvironmentProvider} from "react-relay";
+import {RelayEnvironmentProvider} from "react-relay";
 import relayEnvironment from "./relayEnvironment";
-
-function homeLoader({request}: LoaderFunctionArgs) {
-  const {searchParams} = new URL(request.url);
-  const background = searchParams.get("bg");
-  const sort = searchParams.get("s");
-  const query = searchParams.get("q");
-  const editor = searchParams.get("e");
-
-  return loadQuery(relayEnvironment, ColorschemesGridQuery, {
-    query,
-
-    background:
-      (background === "light" && "LIGHT") ||
-      (background === "dark" && "DARK") ||
-      undefined,
-
-    orderBy:
-      (sort === "popular" && "MOST_POPULAR") ||
-      (sort === "newest" && "NEWEST") ||
-      undefined,
-
-    editor:
-      (editor === "vim" && "VIM") ||
-      (editor === "neovim" && "NEOVIM") ||
-      undefined,
-  });
-}
-
-function colorschemeLoader({params}: LoaderFunctionArgs) {
-  const {id} = params;
-  return loadQuery(relayEnvironment, ColorschemeInfoQuery, {
-    id: decodeURIComponent(id!),
-  });
-}
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
-      <Route index lazy={() => import("./pages/Home")} loader={homeLoader} />
-      <Route
-        path=":id"
-        lazy={() => import("./pages/Colorscheme")}
-        loader={colorschemeLoader}
-      />
+      <Route index lazy={() => import("./pages/Home")} />
+      <Route path=":id" lazy={() => import("./pages/Colorscheme")} />
     </Route>,
   ),
 );

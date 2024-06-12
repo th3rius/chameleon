@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from "react";
-import Shortcut from "./KeyboardInput";
+import KeyboardInput from "./KeyboardInput";
 
 export interface SearchBarType {
   focus: () => void;
@@ -47,7 +47,7 @@ export default forwardRef<SearchBarType, SearchBarProps>(function SearchBar(
         placeholder="Search colorschemes"
         ref={inputRef}
       />
-      <Shortcut>/</Shortcut>
+      <KeyboardInput>/</KeyboardInput>
 
       <style jsx>{`
         .container {

@@ -1,10 +1,11 @@
 import {formatDistanceToNow} from "date-fns";
 import {
   PreloadedQuery,
+  useFragment,
   usePaginationFragment,
   usePreloadedQuery,
 } from "react-relay";
-import {useLoaderData, Link} from "react-router-dom";
+import {useLoaderData, Link, useSearchParams} from "react-router-dom";
 import {graphql} from "relay-runtime";
 import Preview from "@/components/Preview";
 import {ColorschemesGridQuery} from "./__generated__/ColorschemesGridQuery.graphql";
@@ -14,43 +15,28 @@ import {ColorschemesGridFragment$key} from "./__generated__/ColorschemesGridFrag
 import InfiniteScrollTrigger from "@/components/InfiniteScrollTrigger";
 import ColorschemesGridSkeleton from "./ColorschemesGridSkeleton";
 import {useTransition} from "react";
+import useInferMainVariant from "@/hooks/inferMainVariant";
+import {ColorschemesGridColorschemeFragment$key} from "./__generated__/ColorschemesGridColorschemeFragment.graphql";
 
-const ColorchemesGridFragment = graphql`
-  fragment ColorschemesGridFragment on Query
-  @refetchable(queryName: "ColorschemesGridPaginationQuery")
-  @argumentDefinitions(
-    count: {type: "Int"}
-    cursor: {type: "String"}
-    background: {type: "Background"}
-    orderBy: {type: "ColorschemeOrder"}
-    query: {type: "String"}
-  ) {
-    colorschemes(
-      background: $background
-      orderBy: $orderBy
-      query: $query
-      first: $count
-      after: $cursor
-    ) @connection(key: "ColorschemesGridFragment_colorschemes") {
-      edges {
-        node {
-          id
-          owner
-          name
-          stars
-          updatedAt
-          ...PreviewFragment
-          variants {
-            ...BrickFragment
-          }
-        }
+export default function ColorschemesGrid() {
+  const queryRef = useLoaderData() as PreloadedQuery<ColorschemesGridQuery>;
+
+  const data = usePreloadedQuery<ColorschemesGridQuery>(
+    graphql`
+      query ColorschemesGridQuery(
+        $background: Background
+        $orderBy: ColorschemeOrder
+        $query: String
+      ) {
+        ...ColorschemesGridFragment
+          @arguments(background: $background, orderBy: $orderBy, query: $query)
       }
-      pageInfo {
-        hasNextPage
-      }
-    }
-  }
-`;
+    `,
+    queryRef,
+  );
+
+  return <ColorschemesGridPaginationContainer colorschemes={data} />;
+}
 
 interface PaginationContainerProps {
   colorschemes: ColorschemesGridFragment$key;
@@ -60,7 +46,34 @@ function ColorschemesGridPaginationContainer({
   colorschemes,
 }: PaginationContainerProps) {
   const {data, loadNext} = usePaginationFragment(
-    ColorchemesGridFragment,
+    graphql`
+      fragment ColorschemesGridFragment on Query
+      @refetchable(queryName: "ColorschemesGridPaginationQuery")
+      @argumentDefinitions(
+        count: {type: "Int"}
+        cursor: {type: "String"}
+        background: {type: "Background"}
+        orderBy: {type: "ColorschemeOrder"}
+        query: {type: "String"}
+      ) {
+        colorschemes(
+          background: $background
+          orderBy: $orderBy
+          query: $query
+          first: $count
+          after: $cursor
+        ) @connection(key: "ColorschemesGridFragment_colorschemes") {
+          edges {
+            node {
+              ...ColorschemesGridColorschemeFragment
+            }
+          }
+          pageInfo {
+            hasNextPage
+          }
+        }
+      }
+    `,
     colorschemes,
   );
   const [isPending, startTransition] = useTransition();
@@ -72,40 +85,9 @@ function ColorschemesGridPaginationContainer({
   return (
     <>
       <div className="colorschemes">
-        {colorschemeEdges.map(({node}) => {
-          return (
-            <Link
-              to={`/${encodeURIComponent(node.id)}`}
-              className="preview"
-              key={node.id}
-            >
-              <Preview colorscheme={node} />
-              <div className="info">
-                <div className="owner-and-stars">
-                  <span>{node.owner}</span>
-                  <div className="stars">
-                    <StarIcon />
-                    <span>{node.stars}</span>
-                  </div>
-                </div>
-                <div className="name-and-bricks">
-                  <h2 className="name">{node.name}</h2>
-                  {node.variants.length > 1 && (
-                    <div className="bricks">
-                      {node.variants.map((variant, i) => (
-                        <Brick key={i} variant={variant} />
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <span>
-                  last commit{" "}
-                  <strong>{formatDistanceToNow(node.updatedAt)}</strong> ago
-                </span>
-              </div>
-            </Link>
-          );
-        })}
+        {colorschemeEdges.map(({node}) => (
+          <Colorscheme colorscheme={node} />
+        ))}
       </div>
 
       <div className="next-page">
@@ -124,6 +106,75 @@ function ColorschemesGridPaginationContainer({
           gap: 48px;
         }
 
+        @media (min-width: 992px) {
+          .colorschemes {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+      `}</style>
+    </>
+  );
+}
+
+interface ColorschemeProps {
+  colorscheme: ColorschemesGridColorschemeFragment$key;
+}
+
+function Colorscheme({colorscheme}: ColorschemeProps) {
+  const data = useFragment(
+    graphql`
+      fragment ColorschemesGridColorschemeFragment on Colorscheme {
+        id
+        owner
+        name
+        stars
+        updatedAt
+        ...PreviewFragment
+        variants {
+          ...BrickFragment
+        }
+      }
+    `,
+    colorscheme,
+  );
+
+  const [searchParams] = useSearchParams();
+  const backgroundFilter = searchParams.get("bg") || "all";
+  const backgroundToDisplay =
+    (backgroundFilter === "all" && "dark") || backgroundFilter || "dark";
+  const mainVariant = useInferMainVariant(data, backgroundToDisplay);
+
+  return (
+    <Link
+      to={`/${encodeURIComponent(data.id)}`}
+      className="preview"
+      key={data.id}
+    >
+      <Preview colorscheme={data} mainVariant={mainVariant} />
+      <div className="info">
+        <div className="owner-and-stars">
+          <span>{data.owner}</span>
+          <div className="stars">
+            <StarIcon />
+            <span>{data.stars}</span>
+          </div>
+        </div>
+        <div className="name-and-bricks">
+          <h2 className="name">{data.name}</h2>
+          {data.variants.length > 1 && (
+            <div className="bricks">
+              {data.variants.map((variant, i) => (
+                <Brick key={i} variant={variant} />
+              ))}
+            </div>
+          )}
+        </div>
+        <span>
+          last commit <strong>{formatDistanceToNow(data.updatedAt)}</strong> ago
+        </span>
+      </div>
+
+      <style jsx>{`
         .info {
           margin-top: 16px;
         }
@@ -159,12 +210,6 @@ function ColorschemesGridPaginationContainer({
         .next-page {
           margin-top: 42px;
         }
-
-        @media (min-width: 992px) {
-          .colorschemes {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
-        }
       `}</style>
 
       <style jsx global>{`
@@ -181,26 +226,6 @@ function ColorschemesGridPaginationContainer({
           }
         }
       `}</style>
-    </>
+    </Link>
   );
-}
-
-export default function ColorschemesGrid() {
-  const queryRef = useLoaderData() as PreloadedQuery<ColorschemesGridQuery>;
-
-  const data = usePreloadedQuery<ColorschemesGridQuery>(
-    graphql`
-      query ColorschemesGridQuery(
-        $background: Background
-        $orderBy: ColorschemeOrder
-        $query: String
-      ) {
-        ...ColorschemesGridFragment
-          @arguments(background: $background, orderBy: $orderBy, query: $query)
-      }
-    `,
-    queryRef,
-  );
-
-  return <ColorschemesGridPaginationContainer colorschemes={data} />;
 }

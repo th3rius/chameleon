@@ -6,6 +6,7 @@ import {formatDistanceToNow} from "date-fns";
 import Preview from "@/components/Preview";
 import Brick from "@/components/Brick";
 import GithubIcon from "@/assets/github.svg";
+import useInferMainVariant from "@/hooks/inferMainVariant";
 
 export default function ColorschemeInfo() {
   const queryRef = useLoaderData() as PreloadedQuery<ColorschemeInfoQuery>;
@@ -33,6 +34,10 @@ export default function ColorschemeInfo() {
   if (!colorscheme) {
     return <Navigate to="/" />;
   }
+
+  const mainVariantDark = useInferMainVariant(colorscheme, "dark");
+  const mainVariantLight = useInferMainVariant(colorscheme, "light");
+  const hasDarkAndLightVariants = mainVariantDark !== mainVariantLight;
 
   return (
     <div className="info">
@@ -67,8 +72,10 @@ export default function ColorschemeInfo() {
         on GitHub <GithubIcon />
       </a>
       <div className="colorschemes">
-        <Preview colorscheme={colorscheme} />
-        <Preview colorscheme={colorscheme} />
+        <Preview colorscheme={colorscheme} mainVariant={mainVariantDark} />
+        {hasDarkAndLightVariants && (
+          <Preview colorscheme={colorscheme} mainVariant={mainVariantLight} />
+        )}
       </div>
 
       <style jsx>{`
@@ -110,9 +117,10 @@ export default function ColorschemeInfo() {
         }
 
         @media (min-width: 768px) {
-          .colorschemes:not(:has(> :only-child)) {
+          ${hasDarkAndLightVariants &&
+          `.colorschemes {
             grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
+          }`}
         }
       `}</style>
 

@@ -1,3 +1,3 @@
 import Colorscheme from "./Colorscheme";
 
-export default Colorscheme;
+export const Component = Colorscheme;

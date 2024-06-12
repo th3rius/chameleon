@@ -65,6 +65,7 @@ function ColorschemesGridPaginationContainer({
         ) @connection(key: "ColorschemesGridFragment_colorschemes") {
           edges {
             node {
+              id
               ...ColorschemesGridColorschemeFragment
             }
           }
@@ -86,7 +87,7 @@ function ColorschemesGridPaginationContainer({
     <>
       <div className="colorschemes">
         {colorschemeEdges.map(({node}) => (
-          <Colorscheme colorscheme={node} />
+          <Colorscheme colorscheme={node} key={node.id} />
         ))}
       </div>
 

@@ -1,6 +1,5 @@
 import ColorschemesGridQuery from "./pages/Home/__generated__/ColorschemesGridQuery.graphql";
 import ColorschemeInfoQuery from "./pages/Colorscheme/__generated__/ColorschemeInfoQuery.graphql";
-import Colorscheme from "./pages/Colorscheme";
 import Layout from "./components/Layout";
 import {
   createBrowserRouter,
@@ -9,7 +8,6 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import Home from "./pages/Home";
 import {loadQuery, RelayEnvironmentProvider} from "react-relay";
 import relayEnvironment from "./relayEnvironment";
 
@@ -44,8 +42,12 @@ function colorschemeLoader({params}: LoaderFunctionArgs) {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
-      <Route index element={<Home />} loader={homeLoader} />
-      <Route path=":id" element={<Colorscheme />} loader={colorschemeLoader} />
+      <Route index lazy={() => import("./pages/Home")} loader={homeLoader} />
+      <Route
+        path=":id"
+        lazy={() => import("./pages/Colorscheme")}
+        loader={colorschemeLoader}
+      />
     </Route>,
   ),
 );

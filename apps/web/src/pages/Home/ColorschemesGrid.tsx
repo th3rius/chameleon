@@ -196,13 +196,7 @@ export default function ColorschemesGrid() {
         $query: String
       ) {
         ...ColorschemesGridFragment
-          @arguments(
-            background: $background
-            orderBy: $orderBy
-            query: $query
-            count: $count
-            cursor: $cursor
-          )
+          @arguments(background: $background, orderBy: $orderBy, query: $query)
       }
     `,
     queryRef,

@@ -19,7 +19,7 @@ export default function InfiniteScrollTrigger({
     }
   }
 
-  const observer = useRef(null);
+  const observer = useRef<IntersectionObserver | null>(null);
   if (observer.current === null) {
     observer.current = new IntersectionObserver(([firstEntry]) => {
       if (firstEntry.isIntersecting) {
@@ -28,12 +28,12 @@ export default function InfiniteScrollTrigger({
     }, {});
   }
 
-  const targetRef = useRef(null);
+  const targetRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const target = targetRef.current;
-    observer.current.observe(target);
+    observer.current!.observe(target!);
     return () => {
-      observer.current.unobserve(target);
+      observer.current!.unobserve(target!);
     };
   }, [targetRef]);
 

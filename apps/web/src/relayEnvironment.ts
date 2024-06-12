@@ -6,7 +6,7 @@ import {
   FetchFunction,
 } from "relay-runtime";
 
-const HTTP_ENDPOINT = "http://localhost:4000/graphql";
+const HTTP_ENDPOINT = "https:/api.chameleon.nocnitsa.com/graphql";
 
 const fetchFn: FetchFunction = async (request, variables) => {
   const resp = await fetch(HTTP_ENDPOINT, {

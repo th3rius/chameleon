@@ -13,21 +13,27 @@ import relayEnvironment from "./relayEnvironment";
 
 function homeLoader({request}: LoaderFunctionArgs) {
   const {searchParams} = new URL(request.url);
-  const backgroundFilter = searchParams.get("bg");
+  const background = searchParams.get("bg");
   const sort = searchParams.get("s");
   const query = searchParams.get("q");
+  const editor = searchParams.get("e");
 
   return loadQuery(relayEnvironment, ColorschemesGridQuery, {
     query,
 
     background:
-      (backgroundFilter === "light" && "LIGHT") ||
-      (backgroundFilter === "dark" && "DARK") ||
+      (background === "light" && "LIGHT") ||
+      (background === "dark" && "DARK") ||
       undefined,
 
     orderBy:
       (sort === "popular" && "MOST_POPULAR") ||
       (sort === "newest" && "NEWEST") ||
+      undefined,
+
+    editor:
+      (editor === "vim" && "VIM") ||
+      (editor === "neovim" && "NEOVIM") ||
       undefined,
   });
 }

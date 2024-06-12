@@ -19,6 +19,8 @@ import ColorschemeQueryArgs from "./types/ColorschemeQueryArgs";
 import ColorschemesQueryArgs from "./types/ColorschemesQueryArgs";
 import PreviewQueryArgs from "./types/PreviewQueryArgs";
 import {SubmitMutationArgs} from "./types/SubmitMutationArgs";
+import ColorschemeOrder from "./types/ColorschemeOrder";
+import EditorFilter from "./types/EditorFilter";
 
 const exec = promisify(childProcess.exec);
 
@@ -176,7 +178,7 @@ export async function scrapeColorscheme({owner, name}: PreviewQueryArgs) {
 
 export async function getColorschemes(
   db: Db,
-  {query, background, first, after, orderBy}: ColorschemesQueryArgs,
+  {query, background, first, after, orderBy, editor}: ColorschemesQueryArgs,
 ) {
   const collection = db.collection("colorschemes");
   const cursor = collection.find().limit(first + 1);
@@ -204,12 +206,16 @@ export async function getColorschemes(
           },
         },
       },
+
+      editor && {
+        isNeovim: editor === EditorFilter.NEOVIM,
+      },
     ),
   );
 
-  if (orderBy === "MOST_POPULAR") {
+  if (orderBy === ColorschemeOrder.MOST_POPULAR) {
     cursor.sort({stars: -1});
-  } else if (orderBy === "NEWEST") {
+  } else if (orderBy === ColorschemeOrder.NEWEST) {
     cursor.sort({updatedAt: -1});
   }
 

@@ -27,9 +27,15 @@ export default function ColorschemesGrid() {
         $background: Background
         $orderBy: ColorschemeOrder
         $query: String
+        $editor: EditorFilter
       ) {
         ...ColorschemesGridFragment
-          @arguments(background: $background, orderBy: $orderBy, query: $query)
+          @arguments(
+            background: $background
+            orderBy: $orderBy
+            query: $query
+            editor: $editor
+          )
       }
     `,
     queryRef,
@@ -55,11 +61,13 @@ function ColorschemesGridPaginationContainer({
         background: {type: "Background"}
         orderBy: {type: "ColorschemeOrder"}
         query: {type: "String"}
+        editor: {type: "EditorFilter"}
       ) {
         colorschemes(
           background: $background
           orderBy: $orderBy
           query: $query
+          editor: $editor
           first: $count
           after: $cursor
         ) @connection(key: "ColorschemesGridFragment_colorschemes") {

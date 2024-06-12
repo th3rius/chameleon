@@ -40,10 +40,11 @@ export default function Gutter({
         }
 
         .active {
-          background: ${colors.CursorLineBg ||
+          background: ${colors.CursorLineNrBg ||
+          colors.CursorLineBg ||
           colors.LineNrBg ||
           colors.NormalBg};
-          color: ${colors.CursorLineNrFg || colors.LineNrFg};
+          color: ${colors.CursorLineNrFg};
         }
       `}</style>
     </div>

@@ -245,6 +245,21 @@ enum ColorschemeOrder {
   NEWEST
 }
 
+"""
+Editor filtering options for colorschemes.
+"""
+enum EditorFilter {
+  """
+  Vim-compatible colorscheme.
+  """
+  VIM
+
+  """
+  Neovim colorscheme.
+  """
+  NEOVIM
+}
+
 type Query {
   """
   Scrape a colorscheme from GitHub.
@@ -286,6 +301,11 @@ type Query {
     background: Background
 
     """
+    Filter colorschemes supported by this editor.
+    """
+    editor: EditorFilter
+
+    """
     Returns the first _n_ elements from the list.
     """
     first: Int = 10
@@ -298,7 +318,7 @@ type Query {
     """
     Ordering options for the returned colorschemes.
     """
-    orderBy: ColorschemeOrder
+    orderBy: ColorschemeOrder = MOST_POPULAR
   ): ColorschemeConnection!
 
   """

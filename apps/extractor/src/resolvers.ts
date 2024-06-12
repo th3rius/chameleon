@@ -11,6 +11,9 @@ import AppContext from "./types/AppContext";
 import ColorschemesQueryArgs from "./types/ColorschemesQueryArgs";
 import NodeQueryArgs from "./types/NodeQueryArgs";
 import {SubmitMutationArgs} from "./types/SubmitMutationArgs";
+import Background from "./types/Background";
+import ColorschemeOrder from "./types/ColorschemeOrder";
+import EditorFilter from "./types/EditorFilter";
 
 export default {
   Query: {
@@ -72,8 +75,15 @@ export default {
   /**
    * Background enum.
    */
-  Background: {
-    LIGHT: "light",
-    DARK: "dark",
-  },
+  Background,
+
+  /**
+   * EditorFilter enum.
+   */
+  EditorFilter,
+
+  /**
+   * ColorscheemOrder enum.
+   */
+  ColorschemeOrder,
 };

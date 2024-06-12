@@ -1,7 +1,12 @@
+import Background from "./Background";
+import ColorschemeOrder from "./ColorschemeOrder";
+import EditorFilter from "./EditorFilter";
+
 export default interface ColorschemesQueryArgs {
   query?: string;
-  background?: "light" | "dark";
+  background?: Background;
   first: number;
   after?: string;
-  orderBy?: "MOST_POPULAR" | "NEWEST";
+  orderBy?: ColorschemeOrder;
+  editor?: EditorFilter;
 }

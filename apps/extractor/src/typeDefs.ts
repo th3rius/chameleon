@@ -244,6 +244,21 @@ export default `
     NEWEST
   }
 
+  """
+  Editor filtering options for colorschemes.
+  """
+  enum EditorFilter {
+    """
+    Vim-compatible colorscheme.
+    """
+    VIM
+
+    """
+    Neovim colorscheme.
+    """
+    NEOVIM
+  }
+
   type Query {
     """
     Scrape a colorscheme from GitHub.
@@ -283,6 +298,11 @@ export default `
       Filter colorschemes that contains variants with this background.
       """
       background: Background
+
+      """
+      Filter colorschemes supported by this editor.
+      """
+      editor: EditorFilter
 
       """
       Returns the first _n_ elements from the list.

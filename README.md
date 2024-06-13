@@ -9,6 +9,7 @@
 - [Description](#description)
 - [Prologue](#prologue)
 - [Getting Started](#getting-started)
+  - [Run with Docker Compose](#run-with-docker-compose)
   - [Running the server](#running-the-server)
   - [Running the client](#running-the-client)
 - [Epilogue](#epilogue)
@@ -40,6 +41,21 @@ The core stack includes:
 - [React](https://react.dev/) + [Vite](https://vitejs.dev/).
 
 ## Getting Started
+
+### Run with Docker Compose
+
+This is the quickest option. Just run:
+
+```sh
+# get a token here: https://github.com/settings/tokens/new
+# no scopes are needed.
+GITHUB_TOKEN=<token> docker-compose up -d
+```
+
+The site will be aviable at http://localhost:5555,
+and the GraphQL playground will be available at http://localhost:4000/playground.
+
+Keep reading for instructions on how to run the services individually for more details.
 
 ### Running the server
 

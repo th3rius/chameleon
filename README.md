@@ -109,7 +109,7 @@ Run the client:
 npm run dev -w web
 ```
 
-To run the [Relay Compiler](https://relay.dev/docs/guides/compiler/), open another terminal and run:
+Run the [Relay Compiler](https://relay.dev/docs/guides/compiler/) to generate the GraphQL artifacts. In another terminal, run:
 
 ```sh
 npm run relay -w web

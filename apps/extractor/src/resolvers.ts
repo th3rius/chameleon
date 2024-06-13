@@ -53,7 +53,7 @@ export default {
       if (colorscheme) {
         return {
           ...colorscheme,
-          // `Colorscheme` is the only type that implenets `Node`.
+          // `Colorscheme` is the only type that implements `Node`.
           // All nodes are colorschemes.
           __typename: "Colorscheme",
         };

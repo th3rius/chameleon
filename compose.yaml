@@ -18,6 +18,7 @@ services:
       HOST: 0.0.0.0
       MONGODB_URI: mongodb://mongo:27017
       GITHUB_TOKEN: ${GITHUB_TOKEN}
+    entrypoint: sh -c 'npm run setup && node dist/index'
 
   mongo:
     image: "mongo"

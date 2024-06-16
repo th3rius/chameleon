@@ -17,9 +17,12 @@ import ColorschemesGridSkeleton from "./ColorschemesGridSkeleton";
 import {useTransition} from "react";
 import useInferMainVariant from "@/hooks/inferMainVariant";
 import {ColorschemesGridColorschemeFragment$key} from "./__generated__/ColorschemesGridColorschemeFragment.graphql";
+import useNavigationChange from "@/hooks/useNavigationChange";
 
 export default function ColorschemesGrid() {
   const queryRef = useLoaderData() as PreloadedQuery<ColorschemesGridQuery>;
+
+  useNavigationChange(() => queryRef.dispose());
 
   const data = usePreloadedQuery<ColorschemesGridQuery>(
     graphql`

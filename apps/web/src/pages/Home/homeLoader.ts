@@ -10,22 +10,27 @@ export default function homeLoader({request}: LoaderFunctionArgs) {
   const query = searchParams.get("q");
   const editor = searchParams.get("e");
 
-  return loadQuery(relayEnvironment, ColorschemesGridQuery, {
-    query,
+  return loadQuery(
+    relayEnvironment,
+    ColorschemesGridQuery,
+    {
+      query,
 
-    background:
-      (background === "light" && "LIGHT") ||
-      (background === "dark" && "DARK") ||
-      undefined,
+      background:
+        (background === "light" && "LIGHT") ||
+        (background === "dark" && "DARK") ||
+        undefined,
 
-    orderBy:
-      (sort === "popular" && "MOST_POPULAR") ||
-      (sort === "newest" && "NEWEST") ||
-      undefined,
+      orderBy:
+        (sort === "popular" && "MOST_POPULAR") ||
+        (sort === "newest" && "NEWEST") ||
+        undefined,
 
-    editor:
-      (editor === "vim" && "VIM") ||
-      (editor === "neovim" && "NEOVIM") ||
-      undefined,
-  });
+      editor:
+        (editor === "vim" && "VIM") ||
+        (editor === "neovim" && "NEOVIM") ||
+        undefined,
+    },
+    {fetchPolicy: "store-and-network"},
+  );
 }

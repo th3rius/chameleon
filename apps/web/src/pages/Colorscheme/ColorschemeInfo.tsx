@@ -7,9 +7,12 @@ import Preview from "@/components/Preview";
 import Brick from "@/components/Brick";
 import GithubIcon from "@/assets/github.svg";
 import useInferMainVariant from "@/hooks/inferMainVariant";
+import useNavigationChange from "@/hooks/useNavigationChange";
 
 export default function ColorschemeInfo() {
   const queryRef = useLoaderData() as PreloadedQuery<ColorschemeInfoQuery>;
+
+  useNavigationChange(() => queryRef.dispose());
 
   const {colorscheme} = usePreloadedQuery(
     graphql`

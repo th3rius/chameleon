@@ -1,17 +1,16 @@
 import "dotenv/config";
-import Koa from "koa";
-import koaRouter from "koa-router";
+import express from "express";
 import http from "http";
-import koaPlayground from "graphql-playground-middleware-koa";
-import {bodyParser} from "@koa/bodyparser";
-import cors from "@koa/cors";
+import expressPlayground from "graphql-playground-middleware-express";
+import bodyParser from "body-parser";
+import cors from "cors";
 import typeDefs from "./typeDefs";
 import resolvers from "./resolvers";
 import {makeExecutableSchema} from "@graphql-tools/schema";
-import {graphqlHTTP} from "koa-graphql";
+import {createHandler} from "graphql-http/lib/use/express";
 import db from "./db";
 import chalk from "chalk";
-import logger from "koa-logger";
+import morgan from "morgan";
 import type {AddressInfo} from "net";
 
 const schema = makeExecutableSchema({
@@ -20,35 +19,32 @@ const schema = makeExecutableSchema({
 });
 
 async function bootstrap() {
-  const app = new Koa();
-  const router = new koaRouter();
+  const app = express();
 
   const PORT = Number(process.env.PORT || 4000);
   const HOST = process.env.HOST || "localhost";
 
-  router.all(
+  app.use(morgan("dev"));
+  app.use(cors());
+  app.use(bodyParser.json());
+
+  app.all(
     "/graphql",
-    graphqlHTTP({
+    createHandler({
       schema,
       context: {
         db: await db(),
       },
     }),
   );
-  router.all(
+  app.all(
     "/playground",
-    koaPlayground({
+    expressPlayground({
       endpoint: "/graphql",
     }),
   );
 
-  app.use(logger());
-  app.use(cors());
-  app.use(bodyParser());
-  app.use(router.routes());
-  app.use(router.allowedMethods());
-
-  const server = http.createServer(app.callback());
+  const server = http.createServer(app);
   server.listen(PORT, HOST, () => {
     const {address, port} = server.address() as AddressInfo;
     console.log(

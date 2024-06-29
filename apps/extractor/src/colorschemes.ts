@@ -76,7 +76,8 @@ export async function scrapeColorscheme({owner, name}: PreviewQueryArgs) {
     variantFiles = (await readdir(colorsDir)).filter(
       (file) => file.endsWith(".vim") || file.endsWith(".lua"),
     );
-  } catch {
+  } catch (e) {
+    console.error(e);
     await rmTmpColorschemeDir();
     throw new Error(dedent`
       This repoistory does not seems to follow the structure of a Vim plugin.

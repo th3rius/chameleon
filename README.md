@@ -20,7 +20,7 @@ An interactive online database of Vim and Neovim colorschemes that generates cod
 
 Visit it here: https://chameleon.nocnitsa.com/
 
-Explore the GraphQL playground: https://api.chameleon.nocnitsa.com/playground/
+Explore the GraphQL playground: https://j5f5nk046l.execute-api.us-east-1.amazonaws.com/default/playground
 
 ## Prologue
 

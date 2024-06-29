@@ -37,9 +37,9 @@ export default async function app() {
     "/playground",
     expressPlayground({
       endpoint: isProduction
-        ? "/graphql"
-        : // Takes API gateways' route into consideration
-          "/default/graphql",
+        ? // Takes API gateways' route into consideration
+          "/default/graphql"
+        : "graphql",
     }),
   );
 

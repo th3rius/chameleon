@@ -46,7 +46,8 @@ export async function scrapeColorscheme({owner, name}: PreviewQueryArgs) {
     `,
       {owner, name},
     ));
-  } catch {
+  } catch (e) {
+    console.error(e);
     await rmTmpColorschemeDir();
     throw new Error(dedent`
       Unable to find a GitHub repository with the name ${owner}/${name}.

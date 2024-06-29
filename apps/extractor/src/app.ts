@@ -1,27 +1,25 @@
 import "dotenv/config";
 import express from "express";
-import http from "http";
 import expressPlayground from "graphql-playground-middleware-express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import {createHandler} from "graphql-http/lib/use/express";
+import db from "./db";
 import typeDefs from "./typeDefs";
 import resolvers from "./resolvers";
 import {makeExecutableSchema} from "@graphql-tools/schema";
-import {createHandler} from "graphql-http/lib/use/express";
-import db from "./db";
-import chalk from "chalk";
-import type {AddressInfo} from "net";
+import morgan from "morgan";
+
+const isProduction = process.env.NODE_ENV === "production";
 
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
 });
 
-async function bootstrap() {
+export default async function app() {
   const app = express();
-
-  const PORT = Number(process.env.PORT || 4000);
-  const HOST = process.env.HOST || "localhost";
+  app.use(morgan(isProduction ? "tiny" : "dev"));
 
   app.use(cors());
   app.use(bodyParser.json());
@@ -38,17 +36,12 @@ async function bootstrap() {
   app.all(
     "/playground",
     expressPlayground({
-      endpoint: "/graphql",
+      endpoint: isProduction
+        ? "/graphql"
+        : // Takes API gateways' route into consideration
+          "/default/graphql",
     }),
   );
 
-  const server = http.createServer(app);
-  server.listen(PORT, HOST, () => {
-    const {address, port} = server.address() as AddressInfo;
-    console.log(
-      `Server is running at ${chalk.cyan(`http://${address}:${port}`)}! 👾`,
-    );
-  });
+  return app;
 }
-
-bootstrap();
